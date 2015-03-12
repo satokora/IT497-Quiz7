@@ -6,12 +6,16 @@
 
 <<chunk1, echo=FALSE >>=
 library("rvest")
+
+## import table data from wikipedia source ##
 pop <- html("https://en.wikipedia.org/wiki/Ebola_virus_epidemic_in_West_Africa")
 df1 <- html_table(html_nodes(pop, "table")[[2]])
-sumCases <- df1[10,2]
-sumDeaths <- df1[10,3]
-usCase <- df1[6,2]
-usDeath <- df1[6,3]
+
+## Declare variables to set the following paragraph ##
+sumCases <- df1[10,2] # The total number of cases caused by Ebola
+sumDeaths <- df1[10,3] # The total number of casualties died of Ebola
+usCase <- df1[6,2] # The number of cases caused by Ebola in the United States
+usDeath <- df1[6,3] # The number of casualties died of Ebola in the United States
 
 @
 
@@ -22,10 +26,12 @@ The World Health Organization (WHO) and respective governments have reported a t
 
 library(xtable)
 
+## Formatting the 4th column name(Last Update) for the readability ##
 titleFirst <- substr(names(df1[4]), 1, 11)
 titleLast<-substr(names(df1[4]), 12, nchar(names(df1[4])))
 colnames(df1)[4] <- paste(titleFirst, "(" ,titleLast, ")")
 
+## Printing a table using xtable ##
 caption <- "Casualties"
 print(xtable(df1, caption=caption),
       caption.placement="top", include.rownames=FALSE)
